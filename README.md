@@ -1,34 +1,48 @@
-# Template Repository for Automated Testing on GH-Action-Tester
+# Automated Testing Template Repository
 
-This template repository, with its workflow and utilities, is designed to automate the testing process for each assignment and update the Firestore database with the results.
+This template repository is equipped with a workflow and utilities intended to streamline the testing process for each assignment and update the Firestore database with the results automatically.
 
-## Workflow Overview
+## How to Use
 
-The workflow is triggered on every push to any branch and can also be manually triggered through the GitHub interface. It checks out the code from the repository, determines the number of commits on the current branch, and if it's not the first commit, it proceeds to test the code and update Firestore with the results.
-
-1. **Fork/Download this template repository.**
+1. **Fork or Download this template repository.**
 
 2. **Upload your test files.**
+   - The tests should generate a `test-output.xml` file using **JUnit XML** in the root directory (or you can adjust the path as needed).
 
-3. **Change the workflow to suit your tests:**
+3. **Activate Github Actions within the repository.**
 
-   - Open the GitHub workflow configuration file (.github/workflows/main.yml).
-   - Edit the file to align with your project requirements.
-     - This could mean updating the commands to install dependencies and changing the commands to run your tests.
-   - Commit and push these changes to your GitHub repository.
+4. **Customize the workflow to match your testing requirements.**
+   - Open the GitHub workflow configuration file located at `.github/workflows/main.yml`.
+   - Adjust the file to match your project's specific needs:
+     - Modify the command to install dependencies,
+     - Adjust the command to run your tests,
+     - Amend the path to your JUnit XML output file.
+   - Commit and push these changes to your main branch.
 
-4. **Test the pipeline by pushing the solution on the page:**
+5. **Test the pipeline.**
+   - Upload your solution file to a new branch.
    - Upload your solution files on the assignment page.
-   - This will trigger the workflow and you can see the workflow execution in the "Actions" tab of your GitHub repository or assignment page.
+   - Check Github Actions to ensure that the results are being accurately uploaded to the database. 
 
-## Important Points of Workflow
+## Example Use Case - JavaScript
 
-1. **First commit handling:** The workflow skips running on the first commit to any branch. This is based on the assumption that the first commit is usually set up or groundwork, and does not include any testable code.
+Assuming `index.js` is the solution file to be uploaded. It should be placed in the root directory.
 
-2. **Dependencies:** The workflow assumes that the project's dependencies are managed with npm, and that the tests can be run with npm test. If your project does not follow this convention, you may need to modify the workflow accordingly.
+1. Fork the template repository, ensuring the organization remains as the owner.
 
-3. **Running Tests:** As part of the workflow, it automatically runs the tests that are defined and generates a report. The report is then used to update the Firestore with the results of the tests.
+2. Establish a testing environment within the `/tests` folder. For example, `sum.test.js`.
 
-4. **Firestore update:** The last step of the workflow updates Firestore with the test results. This is achieved by running a Python script, db_writer.py, which should be located in the workflow_utils/ directory of your repository. This script should take two arguments: the branch name and a JSON file with the test results.
+3. Enable Github Actions within this repository.
 
-We hope this guide helps you understand and use the Assignment Workflow effectively. If you encounter any issues or have suggestions for improvements, feel free to open an issue or a pull request.
+4. Create a new script inside the test to generate a JUnit XML file.
+```
+"scripts": {
+"test": "jest --reporters=default --reporters=jest-junit"
+}
+```
+
+5. Modify the Github workflow to:
+   - Install the necessary testing dependencies,
+   - Execute the tests.
+   
+6. Verify the pipeline by uploading the solution file on the assignment page and inspecting the workflow results within Github Actions.
